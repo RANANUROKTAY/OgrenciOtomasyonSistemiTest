@@ -30,7 +30,7 @@ public class CourseServiceTest {
         Course c = courseService.createCourse("C1","Title","Desc", t);
 
         assertNotNull(c);
-        assertEquals("C1", c.getCode());
+        assertEquals("C1 t", c.getCode());
         assertEquals("Title", c.getTitle());
         assertEquals(t, c.getTeacher());
 
