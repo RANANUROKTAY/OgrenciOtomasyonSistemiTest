@@ -8,7 +8,7 @@ pipeline {
       }
     }
 
-    stage('Prepare') {
+    stage('Prepare ') {
       steps {
         script {
           if (isUnix()) {
