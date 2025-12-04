@@ -1,26 +1,23 @@
 pipeline {
   agent any
 
-  environment {
-    // gradle wrapper path; use platform-appropriate command in script blocks
-    GRADLEW = '.\\gradlew.bat'
-  }
-
   stages {
     stage('Checkout') {
       steps {
         checkout scm
       }
     }
-    stage('Build') {
-                steps {
-                    // BURAYA EKLEYECEKSİNİZ
-                    sh 'chmod +x gradlew'
 
-                    // Build komutu şimdi izinli olarak çalışacaktır
-                    sh './gradlew clean build'
-                }
-            }
+    stage('Prepare') {
+      steps {
+        script {
+          if (isUnix()) {
+            // Ensure wrapper is executable on Unix agents
+            sh 'chmod +x gradlew'
+          }
+        }
+      }
+    }
 
     stage('Build') {
       steps {
@@ -46,6 +43,7 @@ pipeline {
       }
       post {
         always {
+          // publish test results to Jenkins (if any)
           junit 'build/test-results/test/*.xml'
         }
       }
@@ -70,4 +68,3 @@ pipeline {
     }
   }
 }
-
