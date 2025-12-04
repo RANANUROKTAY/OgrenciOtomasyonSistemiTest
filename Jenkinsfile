@@ -12,6 +12,15 @@ pipeline {
         checkout scm
       }
     }
+    stage('Build') {
+                steps {
+                    // BURAYA EKLEYECEKSİNİZ
+                    sh 'chmod +x gradlew'
+
+                    // Build komutu şimdi izinli olarak çalışacaktır
+                    sh './gradlew clean build'
+                }
+            }
 
     stage('Build') {
       steps {
