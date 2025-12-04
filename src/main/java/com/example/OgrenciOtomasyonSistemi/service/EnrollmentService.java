@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Service
 public class EnrollmentService {
-
+ 
     private final EnrollmentRepository enrollmentRepository;
     private final StudentService studentService;
     private final CourseService courseService;

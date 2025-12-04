@@ -4,7 +4,6 @@ import com.example.OgrenciOtomasyonSistemi.model.Teacher;
 import com.example.OgrenciOtomasyonSistemi.model.User;
 import com.example.OgrenciOtomasyonSistemi.model.Role;
 import com.example.OgrenciOtomasyonSistemi.service.TeacherService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -12,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -23,7 +21,6 @@ public class TeacherControllerTest {
 
     private TeacherService teacherService;
     private MockMvc mockMvc;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -52,13 +49,13 @@ public class TeacherControllerTest {
 
         when(teacherService.createTeacher(anyString(), anyString(), anyString(), anyString())).thenReturn(saved);
 
+        String json = "{\"user\":{\"username\":\"t2\",\"password\":\"p2\"},\"firstName\":\"F\",\"lastName\":\"L\"}";
         mockMvc.perform(post("/api/teachers")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(req)))
+                .content(json))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/teachers/7"));
 
         verify(teacherService, times(1)).createTeacher(anyString(), anyString(), anyString(), anyString());
     }
 }
-

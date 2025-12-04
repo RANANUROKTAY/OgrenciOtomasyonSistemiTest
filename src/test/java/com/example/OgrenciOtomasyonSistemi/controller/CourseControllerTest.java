@@ -6,7 +6,6 @@ import com.example.OgrenciOtomasyonSistemi.model.User;
 import com.example.OgrenciOtomasyonSistemi.model.Role;
 import com.example.OgrenciOtomasyonSistemi.service.CourseService;
 import com.example.OgrenciOtomasyonSistemi.service.TeacherService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -26,7 +25,6 @@ public class CourseControllerTest {
     private CourseService courseService;
     private TeacherService teacherService;
     private MockMvc mockMvc;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -57,13 +55,13 @@ public class CourseControllerTest {
         when(teacherService.findById(2L)).thenReturn(Optional.of(t));
         when(courseService.createCourse(anyString(), anyString(), anyString(), any())).thenReturn(saved);
 
+        String json = "{\"code\":\"C2\",\"title\":\"T\",\"description\":\"D\",\"teacher\":{\"id\":2}}";
         mockMvc.perform(post("/api/courses")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/courses/9"));
+                .content(json))
+                 .andExpect(status().isCreated())
+                 .andExpect(header().string("Location", "/api/courses/9"));
 
-        verify(courseService, times(1)).createCourse(anyString(), anyString(), anyString(), any());
-    }
-}
-
+         verify(courseService, times(1)).createCourse(anyString(), anyString(), anyString(), any());
+     }
+ }

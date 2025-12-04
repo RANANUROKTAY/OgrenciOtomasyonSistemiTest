@@ -4,7 +4,6 @@ import com.example.OgrenciOtomasyonSistemi.model.Role;
 import com.example.OgrenciOtomasyonSistemi.model.Student;
 import com.example.OgrenciOtomasyonSistemi.model.User;
 import com.example.OgrenciOtomasyonSistemi.service.StudentService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,7 +23,6 @@ public class StudentControllerTest {
 
     private StudentService studentService;
     private MockMvc mockMvc;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -78,13 +76,13 @@ public class StudentControllerTest {
 
         when(studentService.createStudent(anyString(), anyString(), anyString(), anyString())).thenReturn(saved);
 
+        String json = "{\"user\":{\"username\":\"newu\",\"password\":\"rawpass\"},\"firstName\":\"FName\",\"lastName\":\"LName\"}";
         mockMvc.perform(post("/api/students")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(req)))
+                .content(json))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/students/5"));
 
         verify(studentService, times(1)).createStudent(anyString(), anyString(), anyString(), anyString());
     }
 }
-
